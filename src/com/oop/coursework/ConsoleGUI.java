@@ -108,10 +108,21 @@ public class ConsoleGUI {
     }
 
     private static void getFormula1DriverStatistics() {
-        manager.getFormula1DriverStatistics();
-        // For Debug
-        for (Driver driver : manager.formula1DriverList) {
-            System.out.println(driver.getName());
+        System.out.println("Enter Driver Id : ");
+        int existingDriverId = SCANNER.nextInt();
+        Formula1Driver driver = manager.getFormula1DriverStatistics(existingDriverId);
+
+        if (driver == null) {
+            System.out.println("Driver Not Found!");
+        } else {
+            System.out.println("Driver Name : " + driver.getName());
+            System.out.println("Driver Location : " + driver.getLocation());
+            System.out.println("Driver Team : " + driver.getTeam());
+            System.out.println("Number of First Places : " + driver.getNumberOfFirstPlaces());
+            System.out.println("Number of Second Places : " + driver.getNumberOfSecondPlaces());
+            System.out.println("Number of Third Places : " + driver.getNumberOfThirdPlaces());
+            System.out.println("Number of Points : " + driver.getNumberOfPoints());
+            System.out.println("Number of Races Participated  : " + driver.getNumberOfRacesParticipated());
         }
     }
 

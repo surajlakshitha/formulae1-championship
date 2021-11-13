@@ -3,18 +3,16 @@ package com.oop.coursework;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 import java.util.stream.Collectors;
 
 public class Formula1ChampionshipManager implements ChampionshipManager {
 
-    static List<Driver> formula1DriverList = new ArrayList<>();
-    static Scanner SCANNER = new Scanner(System.in);
+    static List<Formula1Driver> formula1DriverList = new ArrayList<>();
 
     @Override
     public void createNewFormula1Driver(Driver formula1Driver) {
         System.out.println("createNewFormula1Driver");
-        formula1DriverList.add(formula1Driver);
+        formula1DriverList.add((Formula1Driver) formula1Driver);
         saveFormula1DriverToFile();
     }
 
@@ -44,8 +42,18 @@ public class Formula1ChampionshipManager implements ChampionshipManager {
     }
 
     @Override
-    public void getFormula1DriverStatistics() {
+    public Formula1Driver getFormula1DriverStatistics(int driverId) {
         System.out.println("getFormula1DriverStatistics");
+
+        Formula1Driver foundDriver = null;
+        // Find Object from the List
+        List<Driver> checkForDriver = formula1DriverList.stream().filter(driver -> driver.getDriverId() == (driverId)).collect(Collectors.toList());
+        if (checkForDriver.size() == 0) {
+            System.out.println("Invalid Driver Id");
+        } else {
+            foundDriver = (Formula1Driver) checkForDriver.get(0); // TODO
+        }
+        return foundDriver;
     }
 
     @Override
@@ -59,7 +67,7 @@ public class Formula1ChampionshipManager implements ChampionshipManager {
         try {
             FileOutputStream fos = new FileOutputStream("DriverDetails.txt", false);
             ObjectOutputStream oos = new ObjectOutputStream(fos);
-            for (Driver driver : formula1DriverList) {
+            for (Formula1Driver driver : formula1DriverList) {
                 oos.writeObject(driver);
             }
             oos.close();
@@ -77,7 +85,7 @@ public class Formula1ChampionshipManager implements ChampionshipManager {
             ObjectInputStream ois = new ObjectInputStream(fis);
             for (;;) {
                 try {
-                    Driver formula1Driver = (Driver) ois.readObject();
+                    Formula1Driver formula1Driver = (Formula1Driver) ois.readObject();
                     formula1DriverList.add(formula1Driver);
                 }catch (EOFException e) {
                     break;
