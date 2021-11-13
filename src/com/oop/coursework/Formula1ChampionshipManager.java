@@ -1,5 +1,6 @@
 package com.oop.coursework;
 
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -37,10 +38,37 @@ public class Formula1ChampionshipManager implements ChampionshipManager {
     @Override
     public void saveFormula1DriverToFile() {
         System.out.println("saveFormula1DriverToFile");
+        try {
+            FileOutputStream fos = new FileOutputStream("DriverDetails.txt", false);
+            ObjectOutputStream oos = new ObjectOutputStream(fos);
+            for (Formula1Driver formula1Driver : formula1DriverList) {
+                oos.writeObject(formula1Driver);
+            }
+            oos.close();
+            fos.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     public void retrieveFormula1DriverFromFile() {
         System.out.println("retrieveFormula1DriverFromFile");
+        try {
+            FileInputStream fis = new FileInputStream("DriverDetails.txt");
+            ObjectInputStream ois = new ObjectInputStream(fis);
+            for (;;) {
+                try {
+                    Formula1Driver formula1Driver = (Formula1Driver) ois.readObject();
+                    formula1DriverList.add(formula1Driver);
+                }catch (EOFException e) {
+                    break;
+                }
+            }
+            ois.close();
+            fis.close();
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 }

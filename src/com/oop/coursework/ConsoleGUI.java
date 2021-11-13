@@ -1,6 +1,8 @@
 package com.oop.coursework;
 
+import java.util.ArrayList;
 import java.util.InputMismatchException;
+import java.util.List;
 import java.util.Scanner;
 
 public class ConsoleGUI {
@@ -9,11 +11,15 @@ public class ConsoleGUI {
     static Formula1ChampionshipManager manager = new Formula1ChampionshipManager();
 
     public static void main(String[] args) {
-        displayMenuLoop:
 
+        // Update List from File
+        manager.retrieveFormula1DriverFromFile();
+
+        displayMenuLoop:
         // Creating WHILE loop to loop the program until exit by pressing "0"
+
         while (true) {
-            getMenu();
+            getMenu(); // Display Menu
 
             System.out.println("\nSelect Option to Continue => ");
             int selectOption;

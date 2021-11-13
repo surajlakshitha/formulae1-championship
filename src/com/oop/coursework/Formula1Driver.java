@@ -1,6 +1,11 @@
 package com.oop.coursework;
 
-public class Formula1Driver {
+import java.io.Serializable;
+
+public class Formula1Driver implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+
     private String name;
     private String location;
     private String team;
