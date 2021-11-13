@@ -37,8 +37,19 @@ public class Formula1ChampionshipManager implements ChampionshipManager {
     }
 
     @Override
-    public void updateFormula1DriverTeam() {
+    public void updateFormula1DriverTeam(int driverId ,String newTeam) {
         System.out.println("updateFormula1DriverTeam");
+
+        List<Formula1Driver> checkForDriver = formula1DriverList.stream().filter(driver -> driver.getDriverId() == (driverId)).collect(Collectors.toList());
+
+        for (Formula1Driver driver : checkForDriver) {
+            if (driver.getDriverId() == driverId) {
+                Formula1Driver updatedDriver = driver;
+                updatedDriver.setTeam(newTeam);
+                formula1DriverList.set(formula1DriverList.indexOf(driver), updatedDriver);
+            }
+        }
+        saveFormula1DriverToFile();
     }
 
     @Override
@@ -96,5 +107,14 @@ public class Formula1ChampionshipManager implements ChampionshipManager {
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public boolean checkForDriverExist(int driverId) {
+        List<Driver> checkForDriver = formula1DriverList
+                .stream()
+                .filter(driver -> driver.getDriverId() == (driverId))
+                .collect(Collectors.toList());
+        return checkForDriver.size() != 0;
     }
 }

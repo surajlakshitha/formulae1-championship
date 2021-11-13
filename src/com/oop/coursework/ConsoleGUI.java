@@ -104,7 +104,16 @@ public class ConsoleGUI {
     }
 
     private static void updateFormula1DriverTeam() {
-        manager.updateFormula1DriverTeam();
+        System.out.println("Enter Driver ID : ");
+        int driverId = SCANNER.nextInt();
+
+        if(manager.checkForDriverExist(driverId)){
+            System.out.println("Enter New Team Name : ");
+            String newTeamName = SCANNER.next();
+            manager.updateFormula1DriverTeam(driverId, newTeamName);
+        }else{
+            System.out.println("Driver not Found " + driverId);
+        }
     }
 
     private static void getFormula1DriverStatistics() {
