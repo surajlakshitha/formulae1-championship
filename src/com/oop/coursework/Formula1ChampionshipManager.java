@@ -4,6 +4,7 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 public class Formula1ChampionshipManager implements ChampionshipManager {
 
@@ -18,9 +19,23 @@ public class Formula1ChampionshipManager implements ChampionshipManager {
     }
 
     @Override
-    public void deleteExistingFormula1Driver() {
+    public void deleteExistingFormula1Driver(int driverId) {
         System.out.println("deleteExistingFormula1Driver");
+        boolean isFound = false;
+        // Find Object from the List
+        List<Driver> checkForDriver = formula1DriverList.stream().filter(driver -> driver.getDriverId() == (driverId)).collect(Collectors.toList());
 
+        for (Driver driver : checkForDriver) {
+            if (driver.getDriverId() == driverId) {
+                isFound = true;
+                formula1DriverList.remove(driver);
+            }
+        }
+
+        if (!isFound) {
+            System.out.println("Invalid Driver Id");
+        }
+        saveFormula1DriverToFile();
     }
 
     @Override

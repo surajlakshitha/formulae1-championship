@@ -6,17 +6,31 @@ public abstract class Driver implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    private int driverId;
     private String name;
     private String location;
     private String team;
 
-    public Driver(String name, String location, String team) {
+    public Driver() {
+    }
+
+    public Driver(int driverId, String name, String location, String team) {
+        this.driverId = driverId;
         this.name = name;
         this.location = location;
         this.team = team;
     }
 
-    public Driver() {
+    public static long getSerialVersionUID() {
+        return serialVersionUID;
+    }
+
+    public int getDriverId() {
+        return driverId;
+    }
+
+    public void setDriverId(int driverId) {
+        this.driverId = driverId;
     }
 
     public String getName() {

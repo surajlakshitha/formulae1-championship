@@ -66,6 +66,9 @@ public class ConsoleGUI {
     }
 
     private static void createNewFormula1Driver() {
+        System.out.println("Enter Driver Id : ");
+        int driverId = SCANNER.nextInt();
+
         System.out.println("Enter Driver Name : ");
         String driverName = SCANNER.next();
 
@@ -90,12 +93,14 @@ public class ConsoleGUI {
         System.out.println("Enter Number of Races Participated : ");
         int numberOfRacesParticipated = SCANNER.nextInt();
 
-        Driver newDriver = new Formula1Driver(driverName, driverLocation, teamName, numberOfFirstPlaces, numberOfSecondPlaces, numberOfThirdPlaces, numberOfPoints, numberOfRacesParticipated);
+        Driver newDriver = new Formula1Driver(driverId, driverName, driverLocation, teamName, numberOfFirstPlaces, numberOfSecondPlaces, numberOfThirdPlaces, numberOfPoints, numberOfRacesParticipated);
         manager.createNewFormula1Driver(newDriver);
     }
 
     private static void deleteExistingFormula1Driver() {
-        manager.deleteExistingFormula1Driver();
+        System.out.println("Enter Driver Id : ");
+        int existingDriverId = SCANNER.nextInt();
+        manager.deleteExistingFormula1Driver(existingDriverId);
     }
 
     private static void updateFormula1DriverTeam() {
