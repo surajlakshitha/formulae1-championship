@@ -1,9 +1,7 @@
 package com.oop.coursework;
 
-import java.util.List;
-
 public interface ChampionshipManager {
-    void createNewFormula1Driver();
+    void createNewFormula1Driver(Driver formula1Driver);
     void deleteExistingFormula1Driver();
     void updateFormula1DriverTeam();
     void getFormula1DriverStatistics();

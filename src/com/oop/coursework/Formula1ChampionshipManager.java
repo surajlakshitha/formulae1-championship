@@ -7,17 +7,20 @@ import java.util.Scanner;
 
 public class Formula1ChampionshipManager implements ChampionshipManager {
 
-    static List<Formula1Driver> formula1DriverList = new ArrayList<>();
+    static List<Driver> formula1DriverList = new ArrayList<>();
     static Scanner SCANNER = new Scanner(System.in);
 
     @Override
-    public void createNewFormula1Driver() {
+    public void createNewFormula1Driver(Driver formula1Driver) {
         System.out.println("createNewFormula1Driver");
+        formula1DriverList.add(formula1Driver);
+        saveFormula1DriverToFile();
     }
 
     @Override
     public void deleteExistingFormula1Driver() {
         System.out.println("deleteExistingFormula1Driver");
+
     }
 
     @Override
@@ -41,8 +44,8 @@ public class Formula1ChampionshipManager implements ChampionshipManager {
         try {
             FileOutputStream fos = new FileOutputStream("DriverDetails.txt", false);
             ObjectOutputStream oos = new ObjectOutputStream(fos);
-            for (Formula1Driver formula1Driver : formula1DriverList) {
-                oos.writeObject(formula1Driver);
+            for (Driver driver : formula1DriverList) {
+                oos.writeObject(driver);
             }
             oos.close();
             fos.close();
@@ -59,7 +62,7 @@ public class Formula1ChampionshipManager implements ChampionshipManager {
             ObjectInputStream ois = new ObjectInputStream(fis);
             for (;;) {
                 try {
-                    Formula1Driver formula1Driver = (Formula1Driver) ois.readObject();
+                    Driver formula1Driver = (Driver) ois.readObject();
                     formula1DriverList.add(formula1Driver);
                 }catch (EOFException e) {
                     break;

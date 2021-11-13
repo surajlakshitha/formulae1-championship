@@ -1,8 +1,6 @@
 package com.oop.coursework;
 
-import java.util.ArrayList;
 import java.util.InputMismatchException;
-import java.util.List;
 import java.util.Scanner;
 
 public class ConsoleGUI {
@@ -64,11 +62,36 @@ public class ConsoleGUI {
         System.out.println("Press [3] - Update Formula1Driver's Team");
         System.out.println("Press [4] - Get Formula1Driver Statistics");
         System.out.println("Press [5] - Update Race Stats");
-        System.out.println("Press [0] - Exist");
+        System.out.println("Press [0] - Exit");
     }
 
     private static void createNewFormula1Driver() {
-        manager.createNewFormula1Driver();
+        System.out.println("Enter Driver Name : ");
+        String driverName = SCANNER.next();
+
+        System.out.println("Enter Driver Location : ");
+        String driverLocation = SCANNER.next();
+
+        System.out.println("Enter Team Name : ");
+        String teamName = SCANNER.next();
+
+        System.out.println("Enter Number of First Places : ");
+        int numberOfFirstPlaces = SCANNER.nextInt();
+
+        System.out.println("Enter Number of Second Places : ");
+        int numberOfSecondPlaces = SCANNER.nextInt();
+
+        System.out.println("Enter Number of Third Places : ");
+        int numberOfThirdPlaces = SCANNER.nextInt();
+
+        System.out.println("Enter Number of Points : ");
+        int numberOfPoints = SCANNER.nextInt();
+
+        System.out.println("Enter Number of Races Participated : ");
+        int numberOfRacesParticipated = SCANNER.nextInt();
+
+        Driver newDriver = new Formula1Driver(driverName, driverLocation, teamName, numberOfFirstPlaces, numberOfSecondPlaces, numberOfThirdPlaces, numberOfPoints, numberOfRacesParticipated);
+        manager.createNewFormula1Driver(newDriver);
     }
 
     private static void deleteExistingFormula1Driver() {
@@ -81,6 +104,10 @@ public class ConsoleGUI {
 
     private static void getFormula1DriverStatistics() {
         manager.getFormula1DriverStatistics();
+        // For Debug
+        for (Driver driver : manager.formula1DriverList) {
+            System.out.println(driver.getName());
+        }
     }
 
     private static void updateRaceStats() {
