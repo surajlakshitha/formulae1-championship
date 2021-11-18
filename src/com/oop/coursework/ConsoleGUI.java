@@ -167,6 +167,60 @@ public class ConsoleGUI {
     private static void displayAll() {
         List<Formula1Driver> sortedFormula1DriverList = manager.sortDriversByPoint();
 
+        // Convert List to 2D Array
+        String[][] sortedList2d = new String[sortedFormula1DriverList.size()+1][9];
+        String[] headers = new String[]{"Id", "Name", "Location", "Team", "1st Places", "2nd Places", "3rd Places", "# of Points", "# of Races"};
+        sortedList2d[0] = headers;
+
+        for (int i = 0; i < sortedFormula1DriverList.size(); i++) {
+            Formula1Driver formula1Driver = sortedFormula1DriverList.get(i);
+            sortedList2d[i+1] = new String[]{
+                    String.valueOf(formula1Driver.getDriverId()),
+                    formula1Driver.getName(),
+                    formula1Driver.getLocation(),
+                    formula1Driver.getTeam(),
+                    String.valueOf(formula1Driver.getNumberOfFirstPlaces()),
+                    String.valueOf(formula1Driver.getNumberOfSecondPlaces()),
+                    String.valueOf(formula1Driver.getNumberOfThirdPlaces()),
+                    String.valueOf(formula1Driver.getNumberOfPoints()),
+                    String.valueOf(formula1Driver.getNumberOfRacesParticipated())
+
+            };
+        }
+        Map <Integer, Integer> columnLength = new HashMap<>();
+        for (String[] strings : sortedList2d){
+            for (int i=0; i<strings.length; i++){
+                if (columnLength.get(i) == null){
+                    columnLength.put(i, strings[i].length());
+                }
+                if (columnLength.get(i) < strings[i].length()){
+                    columnLength.put(i, strings[i].length());
+                }
+            }
+        }
+
+        final StringBuilder formatString = new StringBuilder("");
+        columnLength.entrySet().stream().forEach(e -> formatString.append("| %" + "-" + e.getValue() + "s "));
+        formatString.append("|\n");
+
+        StringBuilder borderLine = new StringBuilder("");
+        columnLength.forEach((key, value) -> {
+            borderLine.append("+");
+            for (int i=0; i<value+2; i++){
+              borderLine.append("-");
+            }
+            });
+        borderLine.append("+");
+
+        System.out.println(borderLine);
+        Arrays.stream(sortedList2d).limit(1).forEach(item -> System.out.printf(formatString.toString(), item));
+        System.out.println(borderLine);
+        Arrays.stream(sortedList2d).forEach(item -> {
+            if (item != headers){
+                System.out.printf(formatString.toString(),item);
+            }
+        });
+        System.out.println(borderLine);
     }
 
     private static boolean validateDate(String date) {
