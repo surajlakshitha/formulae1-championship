@@ -2,12 +2,15 @@ package com.oop.coursework;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 public class Formula1ChampionshipManager implements ChampionshipManager {
 
     static List<Formula1Driver> formula1DriverList = new ArrayList<>();
+    static int[] points = {25,18,15,12,10,8,6,4,2,1};
 
     @Override
     public void createNewFormula1Driver(Driver formula1Driver) {
@@ -68,8 +71,13 @@ public class Formula1ChampionshipManager implements ChampionshipManager {
     }
 
     @Override
-    public void updateRaceStats() {
+    public void updateRaceStats(Map<Integer, Integer> raceResult) {
         System.out.println("updateRaceStats");
+        raceResult.forEach((key, value) -> {
+            Formula1Driver tempDriver = formula1DriverList.stream().filter(item -> item.getDriverId() == key).collect(Collectors.toList()).stream().findFirst().orElse(null);
+            formula1DriverList.set(formula1DriverList.indexOf(tempDriver), updatePointAndPlace(tempDriver, value));
+        });
+        saveFormula1DriverToFile();
     }
 
     @Override
@@ -117,4 +125,28 @@ public class Formula1ChampionshipManager implements ChampionshipManager {
                 .collect(Collectors.toList());
         return checkForDriver.size() != 0;
     }
+
+    @Override
+    public List<Formula1Driver> sortDriversByPoint() {
+        Collections.sort(formula1DriverList);
+        return formula1DriverList;
+    }
+
+    private Formula1Driver updatePointAndPlace(Formula1Driver tempDriver, Integer value) {
+        if (value == 1) {
+            tempDriver.setNumberOfFirstPlaces(tempDriver.getNumberOfFirstPlaces()+1);
+        }
+
+        if (value == 2) {
+            tempDriver.setNumberOfSecondPlaces(tempDriver.getNumberOfSecondPlaces()+1);
+        }
+
+        if (value == 3) {
+            tempDriver.setNumberOfThirdPlaces(tempDriver.getNumberOfThirdPlaces()+1);
+        }
+
+        tempDriver.setNumberOfPoints(tempDriver.getNumberOfPoints()+points[value-1]);
+        return tempDriver;
+    }
+
 }
