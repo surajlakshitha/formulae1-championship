@@ -13,7 +13,8 @@ public class ConsoleGUI {
     public static void main(String[] args) {
 
         // Update List from File
-        manager.retrieveFormula1DriverFromFile();
+        manager.retrieveDriverLocal(Formula1ChampionshipManager.driverFileName);
+        manager.retrieveRaceLocal(Formula1ChampionshipManager.raceFileName);
 
         displayMenuLoop:
         // Creating WHILE loop to loop the program until exit by pressing "0"
@@ -144,6 +145,10 @@ public class ConsoleGUI {
         System.out.println("Enter Date : (YYYY-MM-DD)");
         String date =SCANNER.next();
         if (validateDate(date)) {
+            //
+            String [] dateArray= date.split("-");
+            Date dateObj = new Date(Integer.parseInt(dateArray[2]),Integer.parseInt(dateArray[1]),Integer.parseInt(dateArray[0]));
+
             Map<Integer, Integer> raceResult = new HashMap<>();
             System.out.println("Enter Driver IDs (With comma separated)  : ");
             String driverIds = SCANNER.next();
@@ -158,7 +163,7 @@ public class ConsoleGUI {
                     System.out.println("Invalid Id...");
                 }
             }
-            manager.updateRaceStats(raceResult);
+            manager.updateRaceStats(raceResult, dateObj);
         } else{
             System.out.println("Invalid Date...");
         }

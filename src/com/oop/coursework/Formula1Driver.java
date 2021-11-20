@@ -2,7 +2,7 @@ package com.oop.coursework;
 
 import java.io.Serializable;
 
-public class Formula1Driver extends Driver implements Serializable, Comparable<Formula1Driver> {
+public class Formula1Driver extends Driver implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -69,8 +69,5 @@ public class Formula1Driver extends Driver implements Serializable, Comparable<F
         this.numberOfRacesParticipated = numberOfRacesParticipated;
     }
 
-    @Override
-    public int compareTo(Formula1Driver formula1Driver) {
-        return formula1Driver.getNumberOfPoints() - this.getNumberOfPoints();
-    }
+
 }

@@ -8,9 +8,13 @@ public interface ChampionshipManager {
     void deleteExistingFormula1Driver(int driverId);
     void updateFormula1DriverTeam(int driverId, String teamName);
     Formula1Driver getFormula1DriverStatistics(int driverId);
-    void updateRaceStats(Map<Integer, Integer> raceResult);
-    void saveFormula1DriverToFile();
-    void retrieveFormula1DriverFromFile();
+    void updateRaceStats(Map<Integer, Integer> raceResult, Date date);
+    void saveDriverLocal(String fileName);
+    void retrieveDriverLocal(String fileName);
+    void saveRaceLocal(String fileName);
+    void retrieveRaceLocal(String fileName);
     boolean checkForDriverExist(int driverId);
     List<Formula1Driver> sortDriversByPoint ();
+    List<Formula1Driver> sortDiversByNumberOfFirstPlaces ();
+
 }
