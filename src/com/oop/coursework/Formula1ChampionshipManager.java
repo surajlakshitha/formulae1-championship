@@ -174,6 +174,20 @@ public class Formula1ChampionshipManager implements ChampionshipManager {
         return formula1DriverList;
     }
 
+    @Override
+    public List<Race> filterByDriverId(String driverId) {
+        List<Race> filterRace = new ArrayList<>();
+        for (Race race: raceList) {
+            race.getDriverPlaceMap().forEach((key, value) -> {
+                if(key.getDriverId() == Integer.parseInt(driverId)){
+                    filterRace.add(race);
+                }
+            });
+        }
+        return filterRace;
+
+    }
+
     private Formula1Driver updatePointAndPlace(Formula1Driver tempDriver, Integer value) {
         if (value == 1) tempDriver.setNumberOfFirstPlaces(tempDriver.getNumberOfFirstPlaces()+1);
         if (value == 2) tempDriver.setNumberOfSecondPlaces(tempDriver.getNumberOfSecondPlaces()+1);
