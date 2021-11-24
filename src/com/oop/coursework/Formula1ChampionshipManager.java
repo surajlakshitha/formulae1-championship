@@ -175,6 +175,13 @@ public class Formula1ChampionshipManager implements ChampionshipManager {
     }
 
     @Override
+    public List<Race> sortByDate() {
+        List<Race> raceListCopy =  raceList;
+        Collections.sort(raceListCopy);
+        return raceListCopy;
+    }
+
+    @Override
     public List<Race> filterByDriverId(String driverId) {
         List<Race> filterRace = new ArrayList<>();
         for (Race race: raceList) {

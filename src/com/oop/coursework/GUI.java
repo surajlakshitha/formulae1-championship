@@ -1,44 +1,179 @@
 package com.oop.coursework;
 
+
 import javax.swing.*;
+import javax.swing.border.Border;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
+import java.awt.*;
+import java.text.SimpleDateFormat;
+import java.util.Collections;
+import java.util.List;
 
 public class GUI {
 
+    static String[] headersForDrivers = new String[]{"Id", "Name", "Location", "Team", "1st Places", "2nd Places", "3rd Places", "# of Points", "# of Races"};
+    static String[] headersForRace = new String[]{"Date", "1st", "2nd", "3rd", "4th", "5th", "6th", "7th", "8th", "9th", "10th"};
     static Formula1ChampionshipManager manager = new Formula1ChampionshipManager();
 
-    public static void main(String[] args) {
+    public GUI() {
+        // Main Frame Properties
+        JFrame jFrame = new JFrame();
 
-        // Update List from File
+        // Header Fields
+        JLabel jLabel = new JLabel("Welcome to the Formula1 Championship 2021!", SwingConstants.CENTER);
+        jLabel.setFont(new Font("Arial", Font.BOLD, 20));
+        jLabel.setBounds(100, 20, 600, 22);
+
+        // Search Fields
+        JPanel jPanelSearch = new JPanel();
+        jPanelSearch.setBounds(250, 80, 300, 50);
+        jPanelSearch.setLayout(null);
+
+        JTextField searchText = new JTextField();
+        searchText.setBounds(0, 0, 150, 30);
+
+        JButton search = new JButton("Search");
+        search.setBorder(new RoundedBorder(10));
+        search.setBounds(170, 0, 100, 30);
+
+        jPanelSearch.add(searchText);
+        jPanelSearch.add(search);
+
+        // Table Configurations
+        JScrollPane jScrollPane = new JScrollPane();
+        jScrollPane.setLayout(new ScrollPaneLayout());
+        jScrollPane.setBounds(15, 150, 800, 400);
+
+        // Table Data
+        String[][] rowData = convertDriverDataTo2DArray(Formula1ChampionshipManager.formula1DriverList, false, false);
+        String[] colData = headersForDrivers;
+        DefaultTableModel model = new DefaultTableModel(rowData, colData);
+
+        JTable jTable = new JTable(model);
+        jTable.setRowHeight(25);
+        jTable.setCellSelectionEnabled(true);
+        jTable.setFont(new Font("Arial", Font.ITALIC, 14));
+        jTable.setAutoCreateRowSorter(true); // Enable in-build sorter
+
+        JTableHeader jTableHeader = jTable.getTableHeader();
+        jTableHeader.setFont(new Font("Arial", Font.BOLD, 14));
+
+        jScrollPane.setViewportView(jTable);
+
+        // Buttons Fields
+        JPanel jPanelButtons = new JPanel();
+        jPanelButtons.setBounds(50, 585, 800, 30);
+        jPanelButtons.setLayout(null);
+
+        JButton sortByPoints = new JButton("Sort By Points");
+        sortByPoints.setBorder(new RoundedBorder(10));
+        sortByPoints.setBounds(0, 0, 120, 30);
+
+        JButton sortByWins = new JButton("Sort By Wins");
+        sortByWins.setBorder(new RoundedBorder(10));
+        sortByWins.setBounds(150, 0, 120, 30);
+
+        JButton displayRace = new JButton("Display Races");
+        displayRace.setBorder(new RoundedBorder(10));
+        displayRace.setBounds(300, 0, 120, 30);
+
+        JButton generate = new JButton("Generate Race");
+        generate.setBorder(new RoundedBorder(10));
+        generate.setBounds(450, 0, 120, 30);
+
+        JButton reset = new JButton("Reset");
+        reset.setBorder(new RoundedBorder(10));
+        reset.setBounds(600, 0, 120, 30);
+
+
+        jPanelButtons.add(sortByPoints);
+        jPanelButtons.add(sortByWins);
+        jPanelButtons.add(displayRace);
+        jPanelButtons.add(generate);
+        jPanelButtons.add(reset);
+
+        // Add ActionListeners to the Button
+        // TODO Invalid Message
+        search.addActionListener(e -> {
+            List<Race> filteredList = manager.filterByDriverId(searchText.getText());
+            String[][] sortByPointData = convertRaceDataTo2DArray(filteredList);
+            model.setDataVector(sortByPointData, colData);
+        });
+
+        sortByPoints.addActionListener(e -> {
+            String[][] sortByPointData = convertDriverDataTo2DArray(Formula1ChampionshipManager.formula1DriverList, true, false);
+            model.setDataVector(sortByPointData, colData);
+        });
+
+        sortByWins.addActionListener(e -> {
+            String[][] sortByPointData = convertDriverDataTo2DArray(Formula1ChampionshipManager.formula1DriverList, false, true);
+            model.setDataVector(sortByPointData, colData);
+        });
+
+        displayRace.addActionListener(e -> {
+            String[][] sortByPointData = convertRaceDataTo2DArray(Formula1ChampionshipManager.raceList);
+            String[] colHeader = headersForRace;
+            model.setDataVector(sortByPointData, colHeader);
+        });
+
+//        generate.addActionListener(e -> {
+//            try {
+//                manager.generateRandomRace(); // generate random race
+//            } catch (ParseException ex) {
+//                ex.printStackTrace();
+//            }
+//            String[][] sortByPointData = convertRaceDataTo2DArray(Formula1ChampionshipManager.raceList);
+//            String[] colHeader = headersForRace;
+//            model.setDataVector(sortByPointData, colHeader);
+//        });
+
+        reset.addActionListener(e -> {
+            String[][] sortByPointData = convertDriverDataTo2DArray(Formula1ChampionshipManager.formula1DriverList, false, false);
+            model.setDataVector(sortByPointData, colData);
+        });
+
+        // Add Child Components to Parent Components
+        jFrame.add(jLabel);
+        jFrame.add(jPanelSearch);
+        jFrame.add(jScrollPane);
+        jFrame.add(jPanelButtons);
+
+        // Properties
+        jFrame.setTitle("Formula1 Championship - GUI");
+        jFrame.setAlwaysOnTop(true);
+        jFrame.setSize(850, 700);
+        jFrame.setLayout(null); // To Use SetBound Methods
+        jFrame.setResizable(false);
+        jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        jFrame.setVisible(true);
+    }
+
+    public static void main(String[] args) {
+        // Retrieve Data from Files
         manager.retrieveDriverLocal(Formula1ChampionshipManager.driverFileName);
         manager.retrieveRaceLocal(Formula1ChampionshipManager.raceFileName);
 
-        // Main Frame
-        JFrame parent = new JFrame();
-
-        // Child Pane
-        JPanel scrollPane = new JPanel();
-        scrollPane.setBounds(30,60,800,700);
-
-        // Table
-        JTable table = new JTable(getAllDrivers(), new String[]{"Id", "Name", "Location", "Team", "1st Places", "2nd Places", "3rd Places", "# of Points", "# of Races"});
-        table.setRowHeight(20);
-        table.setBounds(50,50,600,500);
-
-        // Add Child Components to Parent
-        scrollPane.add(table);
-        parent.add(scrollPane);
-
-        // Frame Properties
-        parent.setVisible(true);
-        parent.setSize(850,750);
-
+        new GUI();
     }
 
-    private static String[][] getAllDrivers() {
-        String[][] sortedList2d = new String[Formula1ChampionshipManager.formula1DriverList.size()+1][9];
-        for (int i = 0; i < Formula1ChampionshipManager.formula1DriverList.size(); i++) {
-            Formula1Driver formula1Driver = Formula1ChampionshipManager.formula1DriverList.get(i);
-            sortedList2d[i+1] = new String[]{
+    // Only applicable for Formulary1Driver List
+    private String[][] convertDriverDataTo2DArray(List<Formula1Driver> source, boolean isSortedByPoints, boolean isSortedByWins) {
+        List<Formula1Driver> data = source;
+
+        if (isSortedByPoints) {
+            Collections.sort(data, new PointComparator());
+        }
+
+        if (isSortedByWins) {
+            Collections.sort(data, new WinsComparator());
+        }
+
+        String[][] formattedArray = new String[data.size()][9];
+
+        for (int i = 0; i < data.size(); i++) {
+            Formula1Driver formula1Driver = data.get(i);
+            formattedArray[i] = new String[]{
                     String.valueOf(formula1Driver.getDriverId()),
                     formula1Driver.getName(),
                     formula1Driver.getLocation(),
@@ -48,9 +183,58 @@ public class GUI {
                     String.valueOf(formula1Driver.getNumberOfThirdPlaces()),
                     String.valueOf(formula1Driver.getNumberOfPoints()),
                     String.valueOf(formula1Driver.getNumberOfRacesParticipated())
-
             };
         }
-        return sortedList2d;
+        return formattedArray;
+    }
+
+    // Only applicable for Race List
+    private String[][] convertRaceDataTo2DArray(List<Race> source) {
+        List<Race> data = source;
+
+//        Collections.sort(data, new Comparator<Race>() {
+//            @Override
+//            public int compare(Race o1, Race o2) {
+//                return o1.getDate().compareTo(o2.getDate());?
+//            }
+//        });
+
+        String[][] formattedArray = new String[data.size()][11];
+
+        for (int i = 0; i < data.size(); i++) {
+            Race race = data.get(i);
+            String[] temp = new String[11];
+
+            // Format Date
+            String pattern = "yyyy-MM-dd";
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
+            temp[0] = simpleDateFormat.format(race.getDate());
+
+            race.getDriverPlaceMap().forEach((key, value) -> {
+                temp[value] = key.getName();
+            });
+            formattedArray[i] = temp;
+        }
+        return formattedArray;
+    }
+
+    private static class RoundedBorder implements Border {
+        private int radius;
+
+        RoundedBorder(int radius) {
+            this.radius = radius;
+        }
+
+        public Insets getBorderInsets(Component c) {
+            return new Insets(this.radius + 1, this.radius + 1, this.radius + 2, this.radius);
+        }
+
+        public boolean isBorderOpaque() {
+            return true;
+        }
+
+        public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
+            g.drawRoundRect(x, y, width - 1, height - 1, radius, radius);
+        }
     }
 }
