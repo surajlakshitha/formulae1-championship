@@ -176,12 +176,12 @@ public class ConsoleGUI {
     }
 
     private static void updateRaceStats() {
-        System.out.println("Enter Date : (YYYY-MM-DD)");
+        System.out.println("Enter Date : (DD-MM-YYYY)");
         String date =SCANNER.next();
         if (manager.validateDate(date)) {
             //
             String [] dateArray= date.split("-");
-            Date dateObj = new Date(Integer.parseInt(dateArray[2]),Integer.parseInt(dateArray[1]),Integer.parseInt(dateArray[0]));
+            Date dateObj = new Date(Integer.parseInt(dateArray[0]),Integer.parseInt(dateArray[1]),Integer.parseInt(dateArray[2]));
 
             Map<Integer, Integer> raceResult = new HashMap<>();
             System.out.println("Enter Driver IDs (With comma separated)  : ");

@@ -195,13 +195,13 @@ public class Formula1ChampionshipManager implements ChampionshipManager {
         boolean isValidGeneratedDate = true;
         String generatedDateFromRandomValues;
         do {
-            generatedDateFromRandomValues = randomValue(1,31)+"/"+randomValue(1,12)+"/"+randomValue(2020,2021);
+            generatedDateFromRandomValues = randomValue(1,31)+"-"+randomValue(1,12)+"-"+randomValue(2020,2021);
             if (validateDate(generatedDateFromRandomValues)) {
                 isValidGeneratedDate = false;
             }
         } while (isValidGeneratedDate);
 
-        String[] dateArr = generatedDateFromRandomValues.split("/");
+        String[] dateArr = generatedDateFromRandomValues.split("-");
         Date randomDateObj = new Date(Integer.parseInt(dateArr[0]), Integer.parseInt(dateArr[1]), Integer.parseInt(dateArr[2]));
 
         // Generate Places for Each Driver
@@ -270,7 +270,7 @@ public class Formula1ChampionshipManager implements ChampionshipManager {
 
     @Override
     public boolean validateDate(String date) {
-        String[] formatDate = date.split("/");
+        String[] formatDate = date.split("-");
 
         int year = Integer.parseInt(formatDate[2]);
         int month = Integer.parseInt(formatDate[1]);

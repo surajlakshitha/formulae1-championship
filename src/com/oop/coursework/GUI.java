@@ -108,8 +108,9 @@ public class GUI {
         search.addActionListener(e -> {
             List<Race> filteredList = manager.filterByDriverId(searchText.getText());
             String[][] sortByPointData = convertRaceDataTo2DArray(filteredList);
-            model.setDataVector(sortByPointData, colData);
+            model.setDataVector(sortByPointData, headersInRace);
         });
+
 
         sortByPoints.addActionListener(e -> {
             String[][] sortByPointData = convertDriverDataTo2DArray(Formula1ChampionshipManager.formula1DriverList, true, false);
