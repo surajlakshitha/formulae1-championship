@@ -2,18 +2,19 @@ package com.oop.coursework;
 
 
 import javax.swing.*;
-import javax.swing.border.Border;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import java.awt.*;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 public class GUI {
 
-    static String[] headersForDrivers = new String[]{"Id", "Name", "Location", "Team", "1st Places", "2nd Places", "3rd Places", "# of Points", "# of Races"};
-    static String[] headersForRace = new String[]{"Date", "1st", "2nd", "3rd", "4th", "5th", "6th", "7th", "8th", "9th", "10th"};
+    static String[] headersInDrivers = new String[]{"Id", "Name", "Location", "Team", "1st Places", "2nd Places", "3rd Places", "# of Points", "# of Races"};
+    static String[] headersInRace = new String[]{"Date", "1st", "2nd", "3rd", "4th", "5th", "6th", "7th", "8th", "9th", "10th"};
     static Formula1ChampionshipManager manager = new Formula1ChampionshipManager();
 
     public GUI() {
@@ -21,20 +22,22 @@ public class GUI {
         JFrame jFrame = new JFrame();
 
         // Header Fields
-        JLabel jLabel = new JLabel("Welcome to the Formula1 Championship 2021!", SwingConstants.CENTER);
+        JLabel jLabel = new JLabel("-Formula 1 Championship League-", SwingConstants.CENTER);
         jLabel.setFont(new Font("Arial", Font.BOLD, 20));
         jLabel.setBounds(100, 20, 600, 22);
 
         // Search Fields
         JPanel jPanelSearch = new JPanel();
         jPanelSearch.setBounds(250, 80, 300, 50);
+        jPanelSearch.setBackground(Color.lightGray);
         jPanelSearch.setLayout(null);
 
         JTextField searchText = new JTextField();
         searchText.setBounds(0, 0, 150, 30);
 
         JButton search = new JButton("Search");
-        search.setBorder(new RoundedBorder(10));
+        search.setBackground(Color.BLACK);
+        search.setForeground(Color.WHITE);
         search.setBounds(170, 0, 100, 30);
 
         jPanelSearch.add(searchText);
@@ -43,11 +46,12 @@ public class GUI {
         // Table Configurations
         JScrollPane jScrollPane = new JScrollPane();
         jScrollPane.setLayout(new ScrollPaneLayout());
-        jScrollPane.setBounds(15, 150, 800, 400);
+        jScrollPane.setBackground(Color.lightGray);
+        jScrollPane.setBounds(15, 230, 800, 400);
 
         // Table Data
         String[][] rowData = convertDriverDataTo2DArray(Formula1ChampionshipManager.formula1DriverList, false, false);
-        String[] colData = headersForDrivers;
+        String[] colData = headersInDrivers;
         DefaultTableModel model = new DefaultTableModel(rowData, colData);
 
         JTable jTable = new JTable(model);
@@ -63,27 +67,33 @@ public class GUI {
 
         // Buttons Fields
         JPanel jPanelButtons = new JPanel();
-        jPanelButtons.setBounds(50, 585, 800, 30);
+        jPanelButtons.setBounds(50, 150, 800, 30);
+        jPanelButtons.setBackground(Color.lightGray);
         jPanelButtons.setLayout(null);
 
         JButton sortByPoints = new JButton("Sort By Points");
-        sortByPoints.setBorder(new RoundedBorder(10));
+        sortByPoints.setBackground(Color.BLACK);
+        sortByPoints.setForeground(Color.WHITE);
         sortByPoints.setBounds(0, 0, 120, 30);
 
         JButton sortByWins = new JButton("Sort By Wins");
-        sortByWins.setBorder(new RoundedBorder(10));
+        sortByWins.setBackground(Color.BLACK);
+        sortByWins.setForeground(Color.WHITE);
         sortByWins.setBounds(150, 0, 120, 30);
 
         JButton displayRace = new JButton("Display Races");
-        displayRace.setBorder(new RoundedBorder(10));
+        displayRace.setBackground(Color.BLACK);
+        displayRace.setForeground(Color.WHITE);
         displayRace.setBounds(300, 0, 120, 30);
 
         JButton generate = new JButton("Generate Race");
-        generate.setBorder(new RoundedBorder(10));
+        generate.setBackground(Color.BLACK);
+        generate.setForeground(Color.WHITE);
         generate.setBounds(450, 0, 120, 30);
 
-        JButton reset = new JButton("Reset");
-        reset.setBorder(new RoundedBorder(10));
+        JButton reset = new JButton("Reset Races");
+        reset.setBackground(Color.BLACK);
+        reset.setForeground(Color.WHITE);
         reset.setBounds(600, 0, 120, 30);
 
 
@@ -113,20 +123,16 @@ public class GUI {
 
         displayRace.addActionListener(e -> {
             String[][] sortByPointData = convertRaceDataTo2DArray(Formula1ChampionshipManager.raceList);
-            String[] colHeader = headersForRace;
+            String[] colHeader = headersInRace;
             model.setDataVector(sortByPointData, colHeader);
         });
 
-//        generate.addActionListener(e -> {
-//            try {
-//                manager.generateRandomRace(); // generate random race
-//            } catch (ParseException ex) {
-//                ex.printStackTrace();
-//            }
-//            String[][] sortByPointData = convertRaceDataTo2DArray(Formula1ChampionshipManager.raceList);
-//            String[] colHeader = headersForRace;
-//            model.setDataVector(sortByPointData, colHeader);
-//        });
+        generate.addActionListener(e -> {
+            manager.generateRandomRace(); // generate random race
+            String[][] sortByPointData = convertRaceDataTo2DArray(Formula1ChampionshipManager.raceList);
+            String[] colHeader = headersInRace;
+            model.setDataVector(sortByPointData, colHeader);
+        });
 
         reset.addActionListener(e -> {
             String[][] sortByPointData = convertDriverDataTo2DArray(Formula1ChampionshipManager.formula1DriverList, false, false);
@@ -136,18 +142,24 @@ public class GUI {
         // Add Child Components to Parent Components
         jFrame.add(jLabel);
         jFrame.add(jPanelSearch);
-        jFrame.add(jScrollPane);
         jFrame.add(jPanelButtons);
+        jFrame.add(jScrollPane);
 
         // Properties
         jFrame.setTitle("Formula1 Championship - GUI");
         jFrame.setAlwaysOnTop(true);
         jFrame.setSize(850, 700);
+        jFrame.getContentPane().setBackground(Color.lightGray);
         jFrame.setLayout(null); // To Use SetBound Methods
         jFrame.setResizable(false);
         jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         jFrame.setVisible(true);
+
+        ImageIcon icon = new ImageIcon("icon.png");
+        jFrame.setIconImage(icon.getImage());
+
     }
+
 
     public static void main(String[] args) {
         // Retrieve Data from Files
@@ -190,51 +202,33 @@ public class GUI {
 
     // Only applicable for Race List
     private String[][] convertRaceDataTo2DArray(List<Race> source) {
-        List<Race> data = source;
+        List<Race> dataOfTheRace = source;
+        String pattern = "yyyy-MM-dd";
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
 
-//        Collections.sort(data, new Comparator<Race>() {
-//            @Override
-//            public int compare(Race o1, Race o2) {
-//                return o1.getDate().compareTo(o2.getDate());?
-//            }
-//        });
+        Collections.sort(dataOfTheRace, (o1, o2) -> {
+            Date date1 = null;
+            Date date2 = null;
+            try {
+                date1 = simpleDateFormat.parse(o1.getDateString());
+                date2 = simpleDateFormat.parse(o2.getDateString());
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            return date1.compareTo(date2);
+        });
 
-        String[][] formattedArray = new String[data.size()][11];
+        String[][] formattedArray = new String[dataOfTheRace.size()][11];
+        for (int i = 0; i < dataOfTheRace.size(); i++) {
+            Race race = dataOfTheRace.get(i);
 
-        for (int i = 0; i < data.size(); i++) {
-            Race race = data.get(i);
-            String[] temp = new String[11];
-
-            // Format Date
-            String pattern = "yyyy-MM-dd";
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
-            temp[0] = simpleDateFormat.format(race.getDate());
-
+            String[] temp = new String[10];
+            temp[0] = race.getDateString();
             race.getDriverPlaceMap().forEach((key, value) -> {
                 temp[value] = key.getName();
             });
             formattedArray[i] = temp;
         }
         return formattedArray;
-    }
-
-    private static class RoundedBorder implements Border {
-        private int radius;
-
-        RoundedBorder(int radius) {
-            this.radius = radius;
-        }
-
-        public Insets getBorderInsets(Component c) {
-            return new Insets(this.radius + 1, this.radius + 1, this.radius + 2, this.radius);
-        }
-
-        public boolean isBorderOpaque() {
-            return true;
-        }
-
-        public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
-            g.drawRoundRect(x, y, width - 1, height - 1, radius, radius);
-        }
     }
 }

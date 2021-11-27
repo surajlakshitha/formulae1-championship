@@ -6,9 +6,6 @@ public class ConsoleGUI {
 
     static Scanner SCANNER = new Scanner(System.in);
     static Formula1ChampionshipManager manager = new Formula1ChampionshipManager();
-    static int[] daysInMonthForLeapYear = {31,29,31,30,31,30,31,31,30,31,30,31};
-    static int[] daysInMonthForNotLeapYear = {31,28,31,30,31,30,31,31,30,31,30,31};
-
 
     public static void main(String[] args) {
 
@@ -27,7 +24,8 @@ public class ConsoleGUI {
                 try {
                     selectOption = SCANNER.nextInt();
                 } catch (InputMismatchException | IllegalArgumentException e) {
-                    System.out.print("Invalid Option ! ");
+                    System.out.print("Invalid Option ! \n" +
+                            "Select Option to Continue => ");
                     SCANNER.next();
                     continue;
                 }
@@ -73,7 +71,13 @@ public class ConsoleGUI {
 
     private static void createNewFormula1Driver() {
         System.out.println("Enter Driver Id : ");
-        int driverId = SCANNER.nextInt();
+        int driverId;
+
+        while (!SCANNER.hasNextInt()) {
+            System.out.println("Invalid Input!\n");
+            SCANNER.next();
+        }
+        driverId = SCANNER.nextInt();
 
         System.out.println("Enter Driver Name : ");
         String driverName = SCANNER.next();
@@ -85,19 +89,49 @@ public class ConsoleGUI {
         String teamName = SCANNER.next();
 
         System.out.println("Enter Number of First Places : ");
-        int numberOfFirstPlaces = SCANNER.nextInt();
+        int numberOfFirstPlaces;
+
+        while (!SCANNER.hasNextInt()) {
+            System.out.println("Invalid Input!\n");
+            SCANNER.next();
+        }
+        numberOfFirstPlaces = SCANNER.nextInt();
 
         System.out.println("Enter Number of Second Places : ");
-        int numberOfSecondPlaces = SCANNER.nextInt();
+        int numberOfSecondPlaces;
+
+        while (!SCANNER.hasNextInt()) {
+            System.out.println("Invalid Input!\n");
+            SCANNER.next();
+        }
+        numberOfSecondPlaces = SCANNER.nextInt();
 
         System.out.println("Enter Number of Third Places : ");
-        int numberOfThirdPlaces = SCANNER.nextInt();
+        int numberOfThirdPlaces;
+
+        while (!SCANNER.hasNextInt()) {
+            System.out.println("Invalid Input!\n");
+            SCANNER.next();
+        }
+        numberOfThirdPlaces = SCANNER.nextInt();
 
         System.out.println("Enter Number of Points : ");
-        int numberOfPoints = SCANNER.nextInt();
+        int numberOfPoints;
+
+        while (!SCANNER.hasNextInt()) {
+            System.out.println("Invalid Input!\n");
+            SCANNER.next();
+        }
+        numberOfPoints = SCANNER.nextInt();
 
         System.out.println("Enter Number of Races Participated : ");
-        int numberOfRacesParticipated = SCANNER.nextInt();
+        int numberOfRacesParticipated;
+
+        while (!SCANNER.hasNextInt()) {
+            System.out.println("Invalid Input!\n");
+            SCANNER.next();
+        }
+        numberOfRacesParticipated = SCANNER.nextInt();
 
         Driver newDriver = new Formula1Driver(driverId, driverName, driverLocation, teamName, numberOfFirstPlaces, numberOfSecondPlaces, numberOfThirdPlaces, numberOfPoints, numberOfRacesParticipated);
         manager.createNewFormula1Driver(newDriver);
@@ -144,7 +178,7 @@ public class ConsoleGUI {
     private static void updateRaceStats() {
         System.out.println("Enter Date : (YYYY-MM-DD)");
         String date =SCANNER.next();
-        if (validateDate(date)) {
+        if (manager.validateDate(date)) {
             //
             String [] dateArray= date.split("-");
             Date dateObj = new Date(Integer.parseInt(dateArray[2]),Integer.parseInt(dateArray[1]),Integer.parseInt(dateArray[0]));
@@ -226,18 +260,5 @@ public class ConsoleGUI {
             }
         });
         System.out.println(borderLine);
-    }
-
-    private static boolean validateDate(String date) {
-        String[] formatDate = date.split("-");
-
-        int year = Integer.parseInt(formatDate[0]);
-        int month = Integer.parseInt(formatDate[1]);
-        int day = Integer.parseInt(formatDate[2]);
-
-        if (month <= 12 && day <= (year % 4 == 0 ? daysInMonthForLeapYear[month-1] : daysInMonthForNotLeapYear[month-1])) {
-            return true;
-        }
-        return false;
     }
 }

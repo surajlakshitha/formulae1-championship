@@ -10,8 +10,7 @@ public class Date implements Serializable {
     private int month;
     private int year;
 
-    public Date() {
-    }
+    public Date() {}
 
     public Date(int day, int month, int year) {
         this.day = day;
@@ -41,5 +40,10 @@ public class Date implements Serializable {
 
     public void setYear(int year) {
         this.year = year;
+    }
+
+    @Override
+    public String toString(){
+        return year + "-" + month + "-" + day;
     }
 }

@@ -1,5 +1,6 @@
 package com.oop.coursework;
 
+import java.text.ParseException;
 import java.util.List;
 import java.util.Map;
 
@@ -18,5 +19,6 @@ public interface ChampionshipManager {
     List<Formula1Driver> sortDiversByNumberOfFirstPlaces ();
     List<Race> sortByDate();
     List<Race> filterByDriverId (String driverId);
-
+    boolean validateDate(String date);
+    void generateRandomRace() throws ParseException;
 }

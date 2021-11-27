@@ -26,6 +26,10 @@ public class Race implements Serializable, Comparable<Race> {
         return date;
     }
 
+    public String getDateString(){ return date.toString();}
+
+    public void setDateString(){ this.date = date;}
+
     public void setDate(Date date) {
         this.date = date;
     }
